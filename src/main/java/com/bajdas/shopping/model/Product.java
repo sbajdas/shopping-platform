@@ -1,17 +1,26 @@
 package com.bajdas.shopping.model;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "products")
+@Table(name = "PRODUCTS")
+@Data
+@NoArgsConstructor
 public class Product {
     @Id
-    private long id;
+    UUID uuid = UUID.randomUUID();
+    String name;
+    BigDecimal price;
 
-    private String uuid;
-    private String name;
-    private double price;
-
+    public Product(String name, BigDecimal price) {
+        this.name = name;
+        this.price = price;
+    }
 }
