@@ -9,6 +9,7 @@ import com.bajdas.shopping.model.Discount;
 import com.bajdas.shopping.model.Product;
 import com.bajdas.shopping.model.ProductPriceRequest;
 import com.bajdas.shopping.model.ProductPriceResponse;
+import com.bajdas.shopping.model.ServiceException;
 import com.bajdas.shopping.repository.DiscountRepository;
 import com.bajdas.shopping.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -109,6 +111,17 @@ class PriceServiceTest {
 
         //then
         assertEquals(0, expectedTotalPrice.compareTo(calculatedPrice.totalPrice()));
+    }
+
+    @Test
+    void shouldNotAllowNegativePrice() {
+        //given
+        var productPriceDto = new ProductPriceRequest(UUID.randomUUID(), new BigDecimal("0.5"));
+        var tenDollarDiscount = new Discount(BigDecimal.ONE, BigDecimal.TEN, BigDecimal.ZERO);
+        when(discountRepository.findAllByQuantityLessThanEqual(any())).thenReturn(List.of(tenDollarDiscount));
+
+        //then
+        assertThrows(ServiceException.class, () -> service.calculatePrice(productPriceDto));
     }
 
 
