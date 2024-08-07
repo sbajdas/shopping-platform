@@ -26,9 +26,10 @@ public class ProductController {
 
 
     @PostMapping
-    public void addProduct(@RequestBody Product product) {
+    public Product addProduct(@RequestBody Product product) {
         productRepository.save(product);
         log.info("New product added: {}", product);
+        return product;
     }
 
     @GetMapping
@@ -44,7 +45,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{uuid}")
-    public void removeDiscount(@PathVariable UUID uuid) {
+    public void deleteProduct(@PathVariable UUID uuid) {
         productRepository.deleteById(uuid);
     }
 

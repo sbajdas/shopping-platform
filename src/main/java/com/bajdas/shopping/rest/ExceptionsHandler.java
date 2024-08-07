@@ -7,13 +7,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
 @Slf4j
 public class ExceptionsHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class,
+        MethodArgumentTypeMismatchException.class})
     public ResponseEntity<?> handle(IllegalArgumentException exception) {
         log.warn("Bad request: {}", exception.getMessage(), exception);
         return ResponseEntity

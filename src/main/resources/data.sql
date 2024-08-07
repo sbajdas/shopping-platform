@@ -7,4 +7,4 @@ VALUES ('a81a4a43-1a12-4c78-9c1f-31d67f37859e', 'Chips', 12.0);
 INSERT INTO DISCOUNTS (id, quantity, amount_discount, percent_discount)
 VALUES (nextval('mysequence'), 10, 10.0, 0);
 INSERT INTO DISCOUNTS (id, quantity, amount_discount, percent_discount)
-VALUES (nextval('mysequence'), 10, 0, 10.0);
+VALUES (nextval('mysequence'), 10, 0, 0.1);
