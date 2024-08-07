@@ -6,6 +6,16 @@ Simple REST service based on Spring Boot and Hibernate, with following functiona
 * Discounts manipulation
 * Total price calculation
 
+## Launching the service
+
+To start the service one should either start ShoppingApplication.main() via IDE or run in terminal:
+
+```
+mvn clean install
+java -jar target/shopping-0.0.1-SNAPSHOT.jar
+```
+
+Sample products and discounts are preloaded in the database, please check `src/main/resources/data.sql`
 ### Product endpoint
 
 ```[GET] http://localhost:8080/product/``` - list of available products
