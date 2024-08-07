@@ -1,5 +1,6 @@
 package com.bajdas.shopping.rest;
 
+import com.bajdas.shopping.model.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,16 @@ public class ExceptionsHandler {
             .contentType(MediaType.APPLICATION_JSON)
             .body(exception.getMessage());
     }
+
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<?> handle(ServiceException exception) {
+        log.error("Service exception: {}", exception.getMessage(), exception);
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(exception.getMessage());
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handle(Exception exception) {

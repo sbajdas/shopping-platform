@@ -8,13 +8,16 @@ import com.bajdas.shopping.model.Product;
 import com.bajdas.shopping.model.ProductNotFoundException;
 import com.bajdas.shopping.model.ProductPriceRequest;
 import com.bajdas.shopping.model.ProductPriceResponse;
+import com.bajdas.shopping.model.ServiceException;
 import com.bajdas.shopping.repository.DiscountRepository;
 import com.bajdas.shopping.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PriceService {
 
     final ProductRepository productRepository;
@@ -30,7 +33,11 @@ public class PriceService {
     private BigDecimal calculateTotalPrice(Product product, BigDecimal quantity) {
         BigDecimal regularTotalPrice = quantity.multiply(product.getPrice());
         BigDecimal biggestDiscount = findBiggestDiscount(quantity, regularTotalPrice);
-        return regularTotalPrice.subtract(biggestDiscount);
+        BigDecimal totalPrice = regularTotalPrice.subtract(biggestDiscount);
+        if (totalPrice.signum() < 0) {
+            throw new ServiceException("Price after discounts is negative!");
+        }
+        return totalPrice;
     }
 
     private BigDecimal findBiggestDiscount(BigDecimal quantity, BigDecimal regularTotalPrice) {
